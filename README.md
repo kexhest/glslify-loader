@@ -23,7 +23,7 @@ Once installed, you should be able to require your shaders
 like so to have them bundled at build time:
 
 ``` javascript
-var source = require('glslify!raw!./my-shader.glsl')
+var source = require('glslify-loader!raw-loader!./my-shader.glsl')
 ```
 
 ### Configuration
@@ -35,11 +35,14 @@ additional configuration:
 ``` javascript
 module.exports = {
   module: {
-    loaders: [
-      { test: /\.(glsl|frag|vert)$/, loader: 'raw', exclude: /node_modules/ },
-      { test: /\.(glsl|frag|vert)$/, loader: 'glslify', exclude: /node_modules/ }
-    ]
-  }
+    rules: [
+      {
+        test: /\.(glsl|frag|vert)$/,
+        use: [{ loader: 'raw-loader' }, { loader: 'glslif-loader' }],
+        exclude: /node_modules/,
+      },
+    ],
+  },
 }
 ```
 

@@ -1,13 +1,22 @@
+'use strict';
+
+const path = require('path');
+
+const production = process.env.NODE_ENV === 'production';
+
 module.exports = {
+  mode: production ? 'production' : 'development',
   entry: './entry.js',
   output: {
-    path: __dirname,
-    filename: 'bundle.js'
+    path: path.resolve(__dirname),
+    filename: 'bundle.js',
   },
   module: {
-    loaders: [
-      { test: /\.(glsl|frag|vert)$/, loader: 'raw', exclude: /node_modules/ },
-      { test: /\.(glsl|frag|vert)$/, loader: './index', exclude: /node_modules/ }
-    ]
-  }
-}
+    rules: [
+      {
+        test: /\.(glsl|frag|vert)$/,
+        use: [{ loader: 'raw-loader' }, { loader: './index' }],
+      },
+    ],
+  },
+};
