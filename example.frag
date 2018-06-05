@@ -1,6 +1,6 @@
 precision mediump float;
 
-uniform float iGlobalTime;
+uniform float iTime;
 uniform vec3  iResolution;
 
 vec2 doModel(vec3 p);
@@ -11,18 +11,18 @@ vec2 doModel(vec3 p);
 #pragma glslify: normal   = require('glsl-sdf-normal', map = doModel)
 
 vec2 doModel(vec3 p) {
-  float r  = 1.0 + noise(vec4(p, iGlobalTime)) * 0.25;
+  float r  = 1.0 + noise(vec4(p, iTime)) * 0.25;
   float d  = length(p) - r;
   float id = 0.0;
 
   return vec2(d, id);
 }
 
-void main() {
+void mainImage(out vec4 fragColor, in vec2 fragCoord) {
   vec3 color = vec3(0.0);
   vec3 ro, rd;
 
-  float rotation = iGlobalTime;
+  float rotation = iTime;
   float height   = 0.0;
   float dist     = 4.0;
   camera(rotation, height, dist, iResolution.xy, ro, rd);
@@ -35,6 +35,6 @@ void main() {
     color = nor * 0.5 + 0.5;
   }
 
-  gl_FragColor.rgb = color;
-  gl_FragColor.a   = 1.0;
+  fragColor.rgb = color;
+  fragColor.a   = 1.0;
 }
